@@ -1,6 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    signingConfigs {
+        debug {
+            storeFile file('/../../yyg.jks')
+            storePassword '985211yyg'
+            keyAlias = 'yyg'
+            keyPassword '985211yyg'
+        }
+        release {
+            storeFile file('/../../yyg.jks')
+            storePassword '985211yyg'
+            keyAlias = 'yyg'
+            keyPassword '985211yyg'
+        }
+    }
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -10,6 +26,8 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.release
+
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
