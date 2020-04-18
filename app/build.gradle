@@ -4,13 +4,13 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('/../../yyg.jks')
+            storeFile file('/Users/yyg/Downloads/wpc/key/yyg.jks')
             storePassword '985211yyg'
             keyAlias = 'yyg'
             keyPassword '985211yyg'
         }
         release {
-            storeFile file('/../../yyg.jks')
+            storeFile file('/Users/yyg/Downloads/wpc/key/yyg.jks')
             storePassword '985211yyg'
             keyAlias = 'yyg'
             keyPassword '985211yyg'
@@ -34,6 +34,11 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

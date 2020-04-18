@@ -29,17 +29,15 @@ public class MainActivity extends AppCompatActivity {
     //蓝牙设备Mac
     public static final String MAC = "00:0C:BF:15:62:A3";
     //设备连接开关
-    private SwitchButton mDeviceSwitch;
+    private SwitchButton mDevicesSwitch;
     //风力发电机状态开关
-    private SwitchButton mBleSwitch;
+    private SwitchButton mStatusSwitch;
     //转速显示
     private TextView mTextView;
     //蓝牙设备实例
     private BleDevice mCurrentBleDevice;
     //蓝牙是否连接
     private boolean isConnect = false;
-    //转速集合
-    private ArrayList<Integer> mData = new ArrayList<>();
     //分钟转速
     private int turns = 0;
 
@@ -48,23 +46,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mDeviceSwitch = findViewById(R.id.my_switch);
-        mBleSwitch = findViewById(R.id.ble_switch);
+        mDevicesSwitch = findViewById(R.id.device_switch);
+        mStatusSwitch = findViewById(R.id.status_switch);
         mTextView = findViewById(R.id.info_show);
         //判断手机蓝牙是否开启
         if (!BleManager.getInstance().isBlueEnable()) {
             //开启手机蓝牙
             BleManager.getInstance().enableBluetooth();
         }
-
-        //设备连接按钮
-        mDeviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //风力放电机状态控制按钮
+        mStatusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //设备没有链接是无法控制发电机状态
                 if (!isConnect) {
                     showMsg("请先连接设备！");
-                    mDeviceSwitch.setChecked(false);
+                    mStatusSwitch.setChecked(false);
                     return;
                 }
                 if (isChecked) {
@@ -77,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //风力放电机状态控制按钮
-        mBleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //设备连接按钮
+        mDevicesSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -157,23 +154,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onCharacteristicChanged(byte[] data) {
                         // 打开通知后，设备发过来的数据将在这里出现
                         Log.e(TAG, "onCharacteristicChanged: " + data[0]);
-                        if (mData.size() > 5) {
-                            for (Integer datum : mData) {
-                                turns += datum;
-                                mTextView.setText(turns + "转/分钟");
-                            }
-                            //======根据转速自动控制风力发电机工作状态========
-                            if (turns > 40) {
-                                //如果大于40/min视为过速状态，关闭指示灯
-                                writeByteData(intToByteArray(2));
-                            } else {
-                                //如果小于40/min视为正常状态，指示灯打开
-                                writeByteData(intToByteArray(1));
-                            }
-                            mData.clear();
-                            turns = 0;
+                        turns = data[0];
+                        mTextView.setText(data[0] + "转/秒");
+                        //======根据转速自动控制风力发电机工作状态========
+                        if (turns > 10) {
+                            //如果大于40/min视为过速状态，关闭指示灯
+                            writeByteData(intToByteArray(2));
+                            mStatusSwitch.setChecked(true);
                         }
-                        mData.add((int) data[0]);
                     }
                 });
 
@@ -195,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onWriteSuccess(int current, int total, byte[] justWrite) {
 
                     }
+
                     @Override
                     public void onWriteFailure(BleException exception) {
                         showMsg(exception.toString());

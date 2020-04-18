@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -15,24 +15,33 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="50dp"
-        android:text="..转/分钟"
+        android:text="..转/秒"
         android:textColor="@android:color/holo_red_light"
         android:textSize="30sp"
         android:textStyle="bold" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:padding="40dp">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_bluetooth_audio_black_24dp" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设备连接状态"
+            android:textStyle="bold" />
+
         <com.kyleduo.switchbutton.SwitchButton
-            android:id="@+id/ble_switch"
+            android:id="@+id/device_switch"
             style="@style/SwitchButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,38 +49,33 @@
             android:textSize="16dp"
             app:kswTextAdjust="-2dp"
             app:kswTextExtra="8dp"
-            app:kswTextOff="关"
-            app:kswTextOn="开" />
+            app:kswTextOff="no"
+            app:kswTextOn="ok" />
 
     </LinearLayout>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="20dp"
-        android:text="设备状态监控"
-        android:textStyle="bold" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:padding="40dp">
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_lightbulb_outline_black_24dp" />
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="指示灯状态"
+            android:textStyle="bold" />
 
         <com.kyleduo.switchbutton.SwitchButton
-            android:id="@+id/my_switch"
+            android:id="@+id/status_switch"
             style="@style/SwitchButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,24 +86,20 @@
             app:kswTextOff="开"
             app:kswTextOn="关" />
 
+
     </LinearLayout>
 
 
     <TextView
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="20dp"
-        android:text="指示灯状态"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="39dp"
         android:padding="20dp"
-        android:text="注：当转速大于40转/分钟时，App会自动关闭风力发电机，表现为发电机指示灯灭,当转速小于40转/分钟时为正常状态，表现为指示灯常亮；也可以根据显示的转速，手动控制发电机工作状态。"
-        android:textStyle="bold" />
+        android:text="注：当转速大于10转/秒时，App会自动关闭风力发电机，表现为发电机指示灯灭；也可以根据显示的转速，手动控制发电机工作状态。"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_switch" />
 
 
 </LinearLayout>
